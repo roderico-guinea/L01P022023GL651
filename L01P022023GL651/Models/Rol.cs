@@ -1,8 +1,14 @@
-﻿namespace L01P022023GL651.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace L01P022023GL651.Models
 {
     public class Rol
     {
-        public int rolId { get; set; }
-        public string? rolNombre { get; set; }
+        [Key]
+        public int RolId { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string RolNombre { get; set; } = null!;
     }
 }
