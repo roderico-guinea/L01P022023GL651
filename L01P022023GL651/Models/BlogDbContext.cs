@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace L01P022023GL651.Models
+
 {
     public class BlogDbContext : DbContext
     {

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace L01P022023GL651.Models
+
 {
     public class Rol
     {
