@@ -3,21 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace L01P02NUMEROCARNET.Models
 {
-    public class Publicacion
+    public class Comentario
     {
         [Key]
-        public int PublicacionId { get; set; }
+        public int CometarioId { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string Titulo { get; set; } = null!;
+        [ForeignKey("Publicacion")]
+        public int? PublicacionId { get; set; }
 
-        [Required]
-        public string Descripcion { get; set; } = null!;
+        public string? ComentarioTexto { get; set; }
 
         [ForeignKey("Usuario")]
         public int? UsuarioId { get; set; }
 
         public Usuario? Usuario { get; set; }
+        public Publicacion? Publicacion { get; set; }
     }
 }

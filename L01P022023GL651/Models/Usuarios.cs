@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using L01P022023GL651.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace L01P022023GL651.Models
+namespace L01P02NUMEROCARNET.Models
 {
-    public class Usuarios
-
+    public class Usuario
     {
         [Key]
         public int UsuarioId { get; set; }
