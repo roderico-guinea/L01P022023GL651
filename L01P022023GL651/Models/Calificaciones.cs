@@ -3,21 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace L01P022023GL651.Models
 {
-    public class Publicacion
+    public class Calificacion
     {
         [Key]
-        public int PublicacionId { get; set; }
+        public int CalificacionId { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string Titulo { get; set; } = null!;
-
-        [Required]
-        public string Descripcion { get; set; } = null!;
+        [ForeignKey("Publicacion")]
+        public int? PublicacionId { get; set; }
 
         [ForeignKey("Usuario")]
         public int? UsuarioId { get; set; }
 
+        public int? CalificacionValor { get; set; }
+
         public Usuario? Usuario { get; set; }
+        public Publicacion? Publicacion { get; set; }
     }
 }

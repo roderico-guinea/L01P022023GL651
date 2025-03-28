@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace L01P02NUMEROCARNET.Models
+namespace L01P022023GL651.Models
 {
     public class Comentario
     {
