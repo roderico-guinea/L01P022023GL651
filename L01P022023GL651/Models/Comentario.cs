@@ -11,7 +11,8 @@ namespace L01P022023GL651.Models
         [ForeignKey("Publicacion")]
         public int? PublicacionId { get; set; }
 
-        public string? ComentarioTexto { get; set; }
+        [Column("comentario")]
+        public string? Texto { get; set; }
 
         [ForeignKey("Usuario")]
         public int? UsuarioId { get; set; }

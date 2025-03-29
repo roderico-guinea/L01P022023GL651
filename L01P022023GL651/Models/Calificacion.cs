@@ -14,7 +14,8 @@ namespace L01P022023GL651.Models
         [ForeignKey("Usuario")]
         public int? UsuarioId { get; set; }
 
-        public int? CalificacionValor { get; set; }
+        [Column("calificacion")]
+        public int? Valor { get; set; }
 
         public Usuario? Usuario { get; set; }
         public Publicacion? Publicacion { get; set; }
