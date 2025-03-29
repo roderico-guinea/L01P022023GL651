@@ -1,0 +1,29 @@
+﻿@model IEnumerable<L01P022023GL651.Models.Usuario>
+
+<h1>Usuarios</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.UsuarioId</td>
+                <td>@u.NombreUsuario</td>
+                <td>@u.Clave</td>
+                <td>@u.Nombre</td>
+                <td>@u.Apellido</td>
+                <td>@u.Rol?.RolNombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

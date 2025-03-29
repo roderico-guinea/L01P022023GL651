@@ -1,0 +1,21 @@
+﻿@model IEnumerable<L01P022023GL651.Models.Rol>
+
+<h1>Roles</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rol ID</th>
+            <th>Rol Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rol in Model)
+        {
+            <tr>
+                <td>@rol.RolId</td>
+                <td>@rol.RolNombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

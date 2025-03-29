@@ -1,0 +1,25 @@
+﻿@model IEnumerable<L01P022023GL651.Models.Publicacion>
+
+<h1>Publicaciones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.PublicacionId</td>
+                <td>@p.Titulo</td>
+                <td>@p.Descripcion</td>
+                <td>@p.Usuario?.NombreUsuario</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<L01P022023GL651.Models.Calificacion>
+
+<h1>Calificaciones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Publicación</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.CalificacionId</td>
+                <td>@c.Usuario?.NombreUsuario</td>
+                <td>@c.Publicacion?.Titulo</td>
+                <td>@c.CalificacionValor</td>
+            </tr>
+        }
+    </tbody>
+</table>
