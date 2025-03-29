@@ -4,14 +4,9 @@ using L01P022023GL651.Models;
 
 namespace L01P022023GL651.Controllers
 {
-    public class CalificacionesController : Controller
+    public class CalificacionesController(BlogDbContext context) : Controller
     {
-        private readonly BlogDbContext _context;
-
-        public CalificacionesController(BlogDbContext context)
-        {
-            _context = context;
-        }
+        private readonly BlogDbContext _context = context;
 
         public async Task<IActionResult> Index()
         {
@@ -30,15 +25,16 @@ namespace L01P022023GL651.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Calificacion calificacion)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(calificacion);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Usuarios"] = _context.Usuarios.ToList();
+                ViewData["Publicaciones"] = _context.Publicaciones.ToList();
+                return View(calificacion);
             }
-            ViewData["Usuarios"] = _context.Usuarios.ToList();
-            ViewData["Publicaciones"] = _context.Publicaciones.ToList();
-            return View(calificacion);
+
+            _context.Add(calificacion);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -46,9 +42,7 @@ namespace L01P022023GL651.Controllers
             if (id == null) return NotFound();
 
             var calificacion = await _context.Calificaciones.FindAsync(id);
-            if (calificacion == null) return NotFound();
-
-            return View(calificacion);
+            return calificacion == null ? NotFound() : View(calificacion);
         }
 
         [HttpPost, ActionName("Delete")]

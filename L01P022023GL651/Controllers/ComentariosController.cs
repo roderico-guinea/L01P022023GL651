@@ -4,14 +4,9 @@ using L01P022023GL651.Models;
 
 namespace L01P022023GL651.Controllers
 {
-    public class ComentariosController : Controller
+    public class ComentariosController(BlogDbContext context) : Controller
     {
-        private readonly BlogDbContext _context;
-
-        public ComentariosController(BlogDbContext context)
-        {
-            _context = context;
-        }
+        private readonly BlogDbContext _context = context;
 
         public async Task<IActionResult> Index()
         {
@@ -30,15 +25,16 @@ namespace L01P022023GL651.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Comentario comentario)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(comentario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Usuarios"] = _context.Usuarios.ToList();
+                ViewData["Publicaciones"] = _context.Publicaciones.ToList();
+                return View(comentario);
             }
-            ViewData["Usuarios"] = _context.Usuarios.ToList();
-            ViewData["Publicaciones"] = _context.Publicaciones.ToList();
-            return View(comentario);
+
+            _context.Add(comentario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -46,9 +42,7 @@ namespace L01P022023GL651.Controllers
             if (id == null) return NotFound();
 
             var comentario = await _context.Comentarios.FindAsync(id);
-            if (comentario == null) return NotFound();
-
-            return View(comentario);
+            return comentario == null ? NotFound() : View(comentario);
         }
 
         [HttpPost, ActionName("Delete")]

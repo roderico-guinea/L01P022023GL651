@@ -1,13 +1,9 @@
-﻿using L01P022023GL651.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace L01P022023GL651.Models
-
 {
-    public class BlogDbContext : DbContext
+    public class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbContext(options)
     {
-        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options) { }
-
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Publicacion> Publicaciones { get; set; }

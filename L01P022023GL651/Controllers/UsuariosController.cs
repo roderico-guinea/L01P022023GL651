@@ -4,14 +4,9 @@ using L01P022023GL651.Models;
 
 namespace L01P022023GL651.Controllers
 {
-    public class UsuariosController : Controller
+    public class UsuariosController(BlogDbContext context) : Controller
     {
-        private readonly BlogDbContext _context;
-
-        public UsuariosController(BlogDbContext context)
-        {
-            _context = context;
-        }
+        private readonly BlogDbContext _context = context;
 
         public async Task<IActionResult> Index()
         {
@@ -29,14 +24,15 @@ namespace L01P022023GL651.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Roles"] = _context.Roles.ToList();
+                return View(usuario);
             }
-            ViewData["Roles"] = _context.Roles.ToList();
-            return View(usuario);
+
+            _context.Add(usuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -55,15 +51,15 @@ namespace L01P022023GL651.Controllers
         public async Task<IActionResult> Edit(int id, Usuario usuario)
         {
             if (id != usuario.UsuarioId) return NotFound();
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Update(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Roles"] = _context.Roles.ToList();
+                return View(usuario);
             }
-            ViewData["Roles"] = _context.Roles.ToList();
-            return View(usuario);
+
+            _context.Update(usuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -71,9 +67,7 @@ namespace L01P022023GL651.Controllers
             if (id == null) return NotFound();
 
             var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null) return NotFound();
-
-            return View(usuario);
+            return usuario == null ? NotFound() : View(usuario);
         }
 
         [HttpPost, ActionName("Delete")]

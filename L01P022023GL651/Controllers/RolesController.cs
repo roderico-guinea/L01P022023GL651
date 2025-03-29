@@ -4,46 +4,30 @@ using L01P022023GL651.Models;
 
 namespace L01P022023GL651.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController(BlogDbContext context) : Controller
     {
-        private readonly BlogDbContext _context;
+        private readonly BlogDbContext _context = context;
 
-        public RolesController(BlogDbContext context)
-        {
-            _context = context;
-        }
+        public async Task<IActionResult> Index() => View(await _context.Roles.ToListAsync());
 
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Roles.ToListAsync());
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Rol rol)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(rol);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rol);
+            if (!ModelState.IsValid) return View(rol);
+
+            _context.Add(rol);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-
             var rol = await _context.Roles.FindAsync(id);
-            if (rol == null) return NotFound();
-
-            return View(rol);
+            return rol == null ? NotFound() : View(rol);
         }
 
         [HttpPost]
@@ -51,24 +35,18 @@ namespace L01P022023GL651.Controllers
         public async Task<IActionResult> Edit(int id, Rol rol)
         {
             if (id != rol.RolId) return NotFound();
+            if (!ModelState.IsValid) return View(rol);
 
-            if (ModelState.IsValid)
-            {
-                _context.Update(rol);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rol);
+            _context.Update(rol);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-
             var rol = await _context.Roles.FindAsync(id);
-            if (rol == null) return NotFound();
-
-            return View(rol);
+            return rol == null ? NotFound() : View(rol);
         }
 
         [HttpPost, ActionName("Delete")]

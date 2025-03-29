@@ -4,14 +4,9 @@ using L01P022023GL651.Models;
 
 namespace L01P022023GL651.Controllers
 {
-    public class PublicacionesController : Controller
+    public class PublicacionesController(BlogDbContext context) : Controller
     {
-        private readonly BlogDbContext _context;
-
-        public PublicacionesController(BlogDbContext context)
-        {
-            _context = context;
-        }
+        private readonly BlogDbContext _context = context;
 
         public async Task<IActionResult> Index()
         {
@@ -29,14 +24,15 @@ namespace L01P022023GL651.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Publicacion publicacion)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(publicacion);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Usuarios"] = _context.Usuarios.ToList();
+                return View(publicacion);
             }
-            ViewData["Usuarios"] = _context.Usuarios.ToList();
-            return View(publicacion);
+
+            _context.Add(publicacion);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -55,15 +51,15 @@ namespace L01P022023GL651.Controllers
         public async Task<IActionResult> Edit(int id, Publicacion publicacion)
         {
             if (id != publicacion.PublicacionId) return NotFound();
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Update(publicacion);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Usuarios"] = _context.Usuarios.ToList();
+                return View(publicacion);
             }
-            ViewData["Usuarios"] = _context.Usuarios.ToList();
-            return View(publicacion);
+
+            _context.Update(publicacion);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -71,9 +67,7 @@ namespace L01P022023GL651.Controllers
             if (id == null) return NotFound();
 
             var publicacion = await _context.Publicaciones.FindAsync(id);
-            if (publicacion == null) return NotFound();
-
-            return View(publicacion);
+            return publicacion == null ? NotFound() : View(publicacion);
         }
 
         [HttpPost, ActionName("Delete")]
